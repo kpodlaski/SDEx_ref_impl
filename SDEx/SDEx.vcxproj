@@ -142,14 +142,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="license.sha256..txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChainHash.h" />
+    <ClInclude Include="DMChainHash.h" />
+    <ClInclude Include="Hash.h" />
+    <ClInclude Include="SDExCrypt.h" />
+    <ClInclude Include="sha256.h" />
+    <ClInclude Include="StableIVChainHash.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChainHash.cpp" />
+    <ClCompile Include="DMChainHash.cpp" />
+    <ClCompile Include="Hash.cpp" />
     <ClCompile Include="SDEx.cpp" />
+    <ClCompile Include="SDExCrypt.cpp" />
+    <ClCompile Include="sha256.cpp" />
+    <ClCompile Include="StableIVChainHash.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
