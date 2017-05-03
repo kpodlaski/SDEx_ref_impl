@@ -20,9 +20,9 @@ protected:
 
 public:
 	virtual ~ChainHash();
-	virtual std::string hashNextBlock(std::string inputA, std::string inputB);
-	virtual std::string hashNextBlock(std::string input);
-	virtual std::string ChainHash::hashNextBlock(unsigned char * input, int length = -1);
+	virtual void hashNextBlock(std::string inputA, std::string inputB);
+	virtual void hashNextBlock(std::string input);
+	virtual void ChainHash::hashNextBlock(unsigned char * input, int length = -1);
 	virtual unsigned int * init_vector();
 	virtual unsigned int * last_hash();
 	virtual void clear();

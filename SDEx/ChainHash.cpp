@@ -25,43 +25,29 @@ ChainHash::~ChainHash() {
 	delete[] _next_init_vector;
 }
 
-std::string ChainHash::hashNextBlock(std::string input)
+void ChainHash::hashNextBlock(std::string input)
 {
 	return  hashNextBlock((unsigned char*)input.c_str(), input.length());
 }
 
-std::string ChainHash::hashNextBlock(unsigned char * input, int length)
+void ChainHash::hashNextBlock(unsigned char * input, int length)
 {
 	if (length == -1) length = CHAIN_BLOCK_SIZE;
 	unsigned char * digest = new unsigned char[hash->DIGEST_SIZE];
 	memset(digest, 0, sizeof(unsigned char)*hash->DIGEST_SIZE);
 	hash->init(_next_init_vector, hash->IV_SIZE); //8 - for sha
 	hash->update(input, length);
-	//std::cout << input << std::endl << length << std::endl;
 	//Copy last digest into last_hash
 	memcpy(_last_hash, hash->init_vector(), sizeof(unsigned int)*hash->IV_SIZE);
-	/*std::cout << "Check__" << std::endl;
-	std::stringstream ivs;
-	for (int i = 0; i < 8; i++) {
-		ivs << std::setfill('0') << std::setw(8) << std::hex << _last_hash[i] << " ";
-	}
-	std::cout << ivs.str() << std::endl << "__" << std::endl;
-	*/
 	if (length < CHAIN_BLOCK_SIZE) {
 		hash->final(digest);
 		memcpy(_last_hash, digest, sizeof(unsigned int)*hash->IV_SIZE);
 	}
 	updateInitVector();
 	_iteration_count += 1;
-	std::stringstream ss;
-
-	for (int i = 0; i < hash->DIGEST_SIZE; i++)
-		ss << std::setfill('0') << std::setw(2) << std::hex << (int)digest[i];
-	delete[] digest;
-	return  ss.str();
 }
 
-std::string ChainHash::hashNextBlock(std::string inputA, std::string inputB)
+void ChainHash::hashNextBlock(std::string inputA, std::string inputB)
 {
 	return hashNextBlock(inputA + inputB);
 }
