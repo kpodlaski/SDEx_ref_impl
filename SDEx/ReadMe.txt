@@ -1,40 +1,9 @@
-========================================================================
-    CONSOLE APPLICATION : SDEx Project Overview
-========================================================================
+This application is an reference implementation of encryption SDEx method proposed in the work:
+ 
+ Hlobaz, A., Podlaski, K., Milczarski, P.: Applications of qr codes in secure mobile
+data exchange. In Kwiecien, A., Gaj, P., Stera, P., eds.: Computer Networks: 21st
+International Conference, CN 2014, Brunow, Poland, June 23-27, 2014. Proceed-
+ings, Springer International Publishing (2014) 277-286
 
-AppWizard has created this SDEx application for you.
+after enchancements to be published on Computer Networks: 24st International Conference, CN 2017.
 
-This file contains a summary of what you will find in each of the files that
-make up your SDEx application.
-
-
-SDEx.vcxproj
-    This is the main project file for VC++ projects generated using an Application Wizard.
-    It contains information about the version of Visual C++ that generated the file, and
-    information about the platforms, configurations, and project features selected with the
-    Application Wizard.
-
-SDEx.vcxproj.filters
-    This is the filters file for VC++ projects generated using an Application Wizard. 
-    It contains information about the association between the files in your project 
-    and the filters. This association is used in the IDE to show grouping of files with
-    similar extensions under a specific node (for e.g. ".cpp" files are associated with the
-    "Source Files" filter).
-
-SDEx.cpp
-    This is the main application source file.
-
-/////////////////////////////////////////////////////////////////////////////
-Other standard files:
-
-StdAfx.h, StdAfx.cpp
-    These files are used to build a precompiled header (PCH) file
-    named SDEx.pch and a precompiled types file named StdAfx.obj.
-
-/////////////////////////////////////////////////////////////////////////////
-Other notes:
-
-AppWizard uses "TODO:" comments to indicate parts of the source code you
-should add to or customize.
-
-/////////////////////////////////////////////////////////////////////////////
