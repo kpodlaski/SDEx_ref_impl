@@ -29,16 +29,16 @@ void SDExCryptAlg::first_block_cypher(const char * inputBlock, unsigned int size
 	
 	unsigned char * h = (unsigned char *) H_IV;
 	unsigned char * h_u = (unsigned char *)H_U;
-	unsigned char * iv = (unsigned char *) oh;
+	unsigned char * iv = (unsigned char *)ho;// oh;
 	unsigned char * ob = (unsigned char *) outputBlock;
 	unsigned int * iO = (unsigned int*) inputOdd;
-	std::cout <<"MS:"<< size<<" BS:"<<block_count << std::endl;
+	/*std::cout <<"MS:"<< size<<" BS:"<<block_count << std::endl;
 	for (int i = 0; i< block_count; i++)
 		std::cout << std::setfill('0') << std::setw(4) << std::hex << ho[i];
 	std::cout << std::endl;
-	
+	*/
 	for (int i = 0; i < block_count; i++) {
-		ob[i] = inputOdd[i] ^ h[i] ^ iv[i];
+		ob[i] = inputOdd[i] ^ h[i] ^ iv[ (i/4+1)*4-i%4-1 ];
 		/*std::cout << " M:" << std::setfill('0') << std::setw(2) << std::hex << (int) inputOdd[i];
 		std::cout << " 4:" << std::setfill('0') << std::setw(2) << std::hex << (int) h[i];
 		std::cout << " H:" << std::setfill('0') << std::setw(2) << std::hex << (int) iv[i] << std::endl;
@@ -46,6 +46,7 @@ void SDExCryptAlg::first_block_cypher(const char * inputBlock, unsigned int size
 		*/
 		ob[block_count + i] = inputEven[i] ^ h[i] ^ h_u[i];
 	}
+	
 
 	/*for (int i = 0; i < block_count/sizeof(int); i++) {
 		ob[i] = iO[i] ^ H_IV[i] ^ oh[i];
@@ -104,20 +105,56 @@ void SDExCryptAlg::first_block_cypher(const char * inputBlock, unsigned int size
 	for (int i = 0; i < block_count / 2; i++)
 		std::cout << init_vector[i];
 	*/
-	
-	chainHash->hashNextBlock((unsigned char *)inputBlock);
+	std::string cs = chainHash->hashNextBlock((unsigned char *)inputBlock);
+	std::cout << cs << std::endl;
+	unsigned char * iv2 = (unsigned char *)chainHash->init_vector();
+	unsigned char * lh2 = (unsigned char *)chainHash->last_hash();
+	std::cout << "BLOCK: 0" << std::endl;
+	std::stringstream ivs, hs;
+	for (int i = 0; i < 8; i++) {
+		ivs << std::setfill('0') << std::setw(8) << std::hex << chainHash->init_vector()[i] << " ";
+		hs << std::setfill('0') << std::setw(8) << std::hex << chainHash->last_hash()[i] << " ";
+	}
+	std::cout << "IV:\t" << ivs.str() << std::endl;
+	std::cout << "hash:\t" << hs.str() << std::endl;
+	std::cout << "------------------------------------------" << std::endl;
+	/*std::cout << "h1+h0:\t";
+	for (int i = 0; i< block_count; i++)
+		std::cout << std::setfill('0') << std::setw(2) << std::hex << (int) iv2[i];
+	std::cout << std::endl << "h1:\t";
+	for (int i = 0; i< block_count; i++)
+		std::cout <<std::setfill('0') << std::setw(2) << std::hex << (int) lh2[i];
+	std::cout << std::endl;
+	*/
 }
 
 void SDExCryptAlg::block_cypher(const char * inputBlock, unsigned int size, unsigned int * outputBlock) {
 	divide_input_into_subblocks(inputBlock,size); 
-	unsigned int * init_vector = chainHash->init_vector();
-	unsigned int * last_hash = chainHash->last_hash();
-	int block_count = chainHash->CHAIN_BLOCK_SIZE / sizeof(int) / 2;
+	unsigned char * init_vector = (unsigned char *) chainHash->init_vector();
+	unsigned char * last_hash = (unsigned char *) chainHash->last_hash();
+	int block_count = chainHash->CHAIN_BLOCK_SIZE / 2;
+	unsigned char * h_u = (unsigned char *) H_U;
+	unsigned char * ob = (unsigned char *) outputBlock;
+	unsigned int * iO = (unsigned int*) inputOdd;
+
+
 	for (int i = 0; i < block_count; i++) {
-		outputBlock[i] = inputOdd[i] ^ H_IV[i] ^ init_vector[i];
-		outputBlock[block_count + i] = inputEven[i]^ last_hash[i] ^ H_U[i];
+		ob[i] = inputOdd[i] ^ init_vector[(i / 4 + 1) * 4 - i % 4 - 1];
+		ob[block_count + i] = inputEven[i]^ last_hash[(i / 4 + 1) * 4 - i % 4 - 1] ^ h_u[i];
 	}
-	chainHash->hashNextBlock((unsigned char *)inputBlock);
+	std::string sh = chainHash->hashNextBlock((unsigned char *)inputBlock);
+	if (block_crypted < 5) {
+		std::stringstream ivs, hs;
+		std::cout << "------------------------------------------" << std::endl;
+		std::cout << "BLOCK: " << std::dec << block_crypted << std::endl;
+		for (int i = 0; i < 8; i++) {
+			ivs << std::setfill('0') << std::setw(8) << std::hex << chainHash->init_vector()[i] << " ";
+			hs << std::setfill('0') << std::setw(8) << std::hex << chainHash->last_hash()[i] << " ";
+		}
+		std::cout << "IV:\t" << ivs.str() << std::endl;
+		std::cout << "hash:\t" << hs.str() << std::endl;
+		std::cout << "------------------------------------------" << std::endl;
+	}
 }
 
 void SDExCryptAlg::first_block_decypher(const char * inputBlock, unsigned int size, unsigned int * outputBlock) {
@@ -147,6 +184,9 @@ std::string SDExCryptAlg::crypt(std::string message) {
 	long long int message_len = message.length();
 	unsigned char * outputBlock = new unsigned char[chainHash->CHAIN_BLOCK_SIZE];
 	std::stringstream ss;
+	FILE * outFile;
+	//wb in order not to translate end of the line LF into CRLF
+	outFile = fopen("encrypted", "wb");
 	while (message_len > 0) {
 		int size = (int)std::min((long long)chainHash->CHAIN_BLOCK_SIZE, message_len);
 		if (block_crypted < 1) {
@@ -163,6 +203,7 @@ std::string SDExCryptAlg::crypt(std::string message) {
 				size, (unsigned int *)outputBlock);
 		}
 		block_crypted++;
+		fwrite(outputBlock, sizeof(char), chainHash->CHAIN_BLOCK_SIZE, outFile);
 		std::string outputBlock2((char *)outputBlock, chainHash->CHAIN_BLOCK_SIZE);
 		ss << outputBlock2;
 //		for (int i = 0; i < chainHash->CHAIN_BLOCK_SIZE; i++) {
@@ -172,6 +213,7 @@ std::string SDExCryptAlg::crypt(std::string message) {
 		//std::cout << "[[]]" << ss.str() << "[[]]" << std::endl;
 		message_len -= chainHash->CHAIN_BLOCK_SIZE;
 	}
+	fclose(outFile);
 	std::cout << "Block encrypted :" << block_crypted << " Last Block:" << message_len + chainHash->CHAIN_BLOCK_SIZE << std::endl;
 	return  ss.str();
 }

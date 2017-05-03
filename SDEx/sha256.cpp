@@ -113,6 +113,13 @@ void SHA256::update(const unsigned char *message, unsigned int len)
 	memcpy(m_block, &shifted_message[block_nb << 6], rem_len);
 	m_len = rem_len;
 	m_tot_len += (block_nb + 1) << 6;
+	/*std::cout << "UP__"<<std::endl;
+	std::stringstream ivs;
+	for (int i = 0; i < 8; i++) {
+		ivs << std::setfill('0') << std::setw(8) << std::hex << m_h[i] << " ";
+	}
+	std::cout << ivs.str()<<std::endl<<"__" << std::endl;
+	*/
 }
 
 void SHA256::final(unsigned char *digest)

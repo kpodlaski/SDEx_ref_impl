@@ -9,6 +9,7 @@ class ChainHash
 {
 protected:
 	typedef unsigned int uint32;
+	uint32 _iteration_count;
 	uint32 * _last_hash;
 	uint32 * _next_init_vector;
 	Hash *  hash;
