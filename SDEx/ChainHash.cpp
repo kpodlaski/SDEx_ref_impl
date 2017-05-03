@@ -37,15 +37,16 @@ std::string ChainHash::hashNextBlock(unsigned char * input, int length)
 	memset(digest, 0, sizeof(unsigned char)*hash->DIGEST_SIZE);
 	hash->init(_next_init_vector, hash->IV_SIZE); //8 - for sha
 	hash->update(input, length);
-	std::cout << input << std::endl << length << std::endl;
+	//std::cout << input << std::endl << length << std::endl;
 	//Copy last digest into last_hash
 	memcpy(_last_hash, hash->init_vector(), sizeof(unsigned int)*hash->IV_SIZE);
-	std::cout << "Check__" << std::endl;
+	/*std::cout << "Check__" << std::endl;
 	std::stringstream ivs;
 	for (int i = 0; i < 8; i++) {
 		ivs << std::setfill('0') << std::setw(8) << std::hex << _last_hash[i] << " ";
 	}
 	std::cout << ivs.str() << std::endl << "__" << std::endl;
+	*/
 	if (length < CHAIN_BLOCK_SIZE) {
 		hash->final(digest);
 		memcpy(_last_hash, digest, sizeof(unsigned int)*hash->IV_SIZE);

@@ -23,8 +23,6 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="license.sha256..txt" />
-    <Text Include="a.txt" />
-    <Text Include="test.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -77,12 +75,5 @@
     <ClCompile Include="StableIVChainHash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="a.zip" />
-    <None Include="a_zaszyfrowane" />
-    <None Include="a_zaszyfrowane.zip" />
-    <None Include="encrypted" />
-    <None Include="crypt2" />
   </ItemGroup>
 </Project>

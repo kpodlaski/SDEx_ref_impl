@@ -68,10 +68,11 @@ void main_encrypt_test() {
 	plik.close();
 
 
-	return;
 	SDExCryptAlg * decrypt = new SDExCryptAlg(new SHA256(), "Ala_ma_kota", "Ala_nie_ma_kota");
-	string decrypted = crypt->decrypt(encrypted);
-	cout << decrypted << endl;
+	string decrypted = decrypt->decrypt(encrypted);
+	plik.open("decrypted", std::ios_base::binary | std::ios_base::out);
+	plik << decrypted;
+	plik.close();
 }
 
 void main_chainhash_test() {
