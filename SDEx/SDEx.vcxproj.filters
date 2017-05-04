@@ -23,6 +23,7 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="license.sha256..txt" />
+    <Text Include="license.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

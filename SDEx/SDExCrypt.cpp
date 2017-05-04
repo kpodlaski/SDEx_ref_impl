@@ -34,6 +34,7 @@ void SDExCryptAlg::first_block_cypher(const char * inputBlock, unsigned int size
 	chainHash->hashNextBlock((unsigned char *)inputBlock);
 }
 
+
 void SDExCryptAlg::block_cypher(const char * inputBlock, unsigned int size, unsigned int * outputBlock) {
 	divide_input_into_subblocks(inputBlock,size); 
 	unsigned char * init_vector = (unsigned char *) chainHash->init_vector();

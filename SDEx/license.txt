@@ -1,15 +1,6 @@
 /*
- * LICENSE FOR sha256 used in SDEx reference implementation
  *
- * Updated to C++, zedwood.com 2012
- * Based on Olivier Gay's version
- * See Modified BSD License below: 
- *
- * FIPS 180-2 SHA-224/256/384/512 implementation
- * Issue date:  04/30/2005
- * http://www.ouah.org/ogay/sha2/
- *
- * Copyright (C) 2005, 2007 Olivier Gay <olivier.gay@a3.epfl.ch>
+ * Copyright (C) 2017 Artur Hlobaz, Krzysztof Podlaski and Piotr Milczarski
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

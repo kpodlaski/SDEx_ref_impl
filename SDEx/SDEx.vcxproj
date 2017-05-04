@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="license.sha256..txt" />
+    <Text Include="license.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
